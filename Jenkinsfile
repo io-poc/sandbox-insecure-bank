@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout Source Code') {
             steps {
-                git branch: 'master', url: 'https://github.com/io-poc/sandbox-insecure-bank'
+                git branch: 'main', url: 'https://github.com/io-poc/sandbox-insecure-bank'
             }
         }
 
@@ -30,7 +30,7 @@ pipeline {
                         projectName: 'insecure-bank',
                         workflowVersion: '2021.12.4'),
                     github(
-                        branch: 'master',
+                        branch: 'main',
                         configName: 'github-sandbox',
                         owner: 'io-poc',
                         repositoryName: 'poc-88'), 
