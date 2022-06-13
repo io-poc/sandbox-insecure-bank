@@ -45,7 +45,7 @@ pipeline {
                         projectName: 'insecure-bank-2', 
                         projectVersion: '1.0')                        
                     ]) {
-                        sh 'io --stage io Persona.Type=developer Project.Release.Type=major'
+                        sh 'io --stage io Persona.Type=devops Project.Release.Type=major'
                     }
 
                 script {
