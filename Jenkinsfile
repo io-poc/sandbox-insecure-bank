@@ -33,13 +33,13 @@ pipeline {
                         branch: 'main',
                         configName: 'github-sandbox',
                         owner: 'io-poc',
-                        repositoryName: 'poc-88'), 
+                        repositoryName: 'sandbox-insecure-bank'), 
                     jira(
                          assignee: 'iouser@synopsys.com', 
                          configName: 'jira-sandbox', 
                          issueQuery: 'resolution=Unresolved', 
-                         projectKey: 'INSEC', 
-                         projectName: 'insecure-bank'), 
+                         projectKey: 'INSEC2', 
+                         projectName: 'insecure-bank-2'), 
                     blackduck(
                         configName: 'bd-sandbox', 
                         projectName: 'insecure-bank-2', 
