@@ -78,7 +78,7 @@ pipeline {
         //     }
         // }
         
-        stage('SAST- RapidScan') { environment {
+        stage('SAST - Sigma') { environment {
             OSTYPE='linux-gnu' }
             when {
                expression { isSASTEnabled }
@@ -135,7 +135,7 @@ pipeline {
                 echo 'Execute Workflow Stage'
                 synopsysIO(connectors: [
                     //codeDx(configName: 'poc-codedx', projectId: '1'),
-                    jira(assignee: 'karn@synopsys.com', configName: 'jira-sandbox', issueQuery: 'resolution=Unresolved AND labels in (Security, Defect)', projectKey: 'INSEC'), 
+                    jira(assignee: 'iouser@synopsys.com', configName: 'jira-sandbox', issueQuery: 'resolution=Unresolved AND labels in (Security, Defect)', projectKey: 'INSEC'), 
                     //msteams(configName: 'poc-msteams'), 
                     //buildBreaker(configName: 'poc-bb')
                 ]) {
