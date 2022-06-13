@@ -28,7 +28,7 @@ pipeline {
                     io(
                         configName: 'io-sandbox',
                         projectName: 'insecure-bank',
-                        workflowVersion: '2021.12.4'),
+                        workflowVersion: '2022.4.1'),
                     github(
                         branch: 'main',
                         configName: 'github-sandbox',
