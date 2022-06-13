@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout Source Code') {
             steps {
-                git branch: 'master', url: 'https://github.com/io-poc/leap-poc'
+                git branch: 'master', url: 'https://github.com/io-poc/sandbox-insecure-bank'
             }
         }
 
@@ -26,22 +26,26 @@ pipeline {
             steps {
                 synopsysIO(connectors: [
                     io(
-                        configName: 'poc-io',
+                        configName: 'io-sandbox',
                         projectName: 'insecure-bank',
                         workflowVersion: '2021.12.4'),
                     github(
                         branch: 'master',
-                        configName: 'poc-github',
+                        configName: 'github-sandbox',
                         owner: 'io-poc',
-                        repositoryName: 'leap-poc'), 
-                     jira(
+                        repositoryName: 'poc-88'), 
+                    jira(
                          assignee: 'karn@synopsys.com', 
-                         configName: 'poc-jira', 
+                         configName: 'jira-sandbox', 
                          issueQuery: 'resolution=Unresolved', 
                          projectKey: 'INSEC', 
                          projectName: 'insecure-bank'), 
-                    buildBreaker(configName: 'poc-bb')]) {
-                        sh 'io --stage io Persona.Type=devsecops Project.Release.Type=minor'
+                    blackduck(
+                        configName: 'bd-sandbox', 
+                        projectName: 'insecure-bank-2', 
+                        projectVersion: '1.0')                        
+                    ]) {
+                        sh 'io --stage io Persona.Type=developer Project.Release.Type=major'
                     }
 
                 script {
@@ -59,21 +63,34 @@ pipeline {
         }
 
 
-        stage('SAST - Polaris') {
+        // stage('SAST - Polaris') {
+        //     when {
+        //         expression { isSASTEnabled }
+        //     }
+        //     steps {
+        //         echo 'Running SAST using Polaris'
+        //         synopsysIO(connectors: [
+        //             [$class: 'PolarisPipelineConfig',
+        //             configName: 'polaris-demo',
+        //             projectName: 'insecure-bank']]) {
+        //             sh 'io --stage execution --state io_state.json'
+        //         }
+        //     }
+        // }
+        
+        stage('SAST- RapidScan') { environment {
+            OSTYPE='linux-gnu' }
             when {
-                expression { isSASTEnabled }
+               expression { isSASTEnabled }
             }
             steps {
-                echo 'Running SAST using Polaris'
-                synopsysIO(connectors: [
-                    [$class: 'PolarisPipelineConfig',
-                    configName: 'poc-polaris',
-                    projectName: 'insecure-bank']]) {
-                    sh 'io --stage execution --state io_state.json'
-                }
+                echo 'Running SAST using Sigma - Rapid Scan'
+                echo env.OSTYPE
+                synopsysIO(connectors: [rapidScan(configName: 'sigma-sandbox')]) {
+                sh 'io --stage execution --state io_state.json' }
             }
         }
-
+        
         stage('SAST Plus Manual') {
             when {
                 expression { isSASTPlusMEnabled }
@@ -93,8 +110,8 @@ pipeline {
             steps {
               echo 'Running SCA using BlackDuck'
               synopsysIO(connectors: [
-                  blackduck(configName: 'poc-bd',
-                  projectName: 'insecure-bank',
+                  blackduck(configName: 'bd-sandbox',
+                  projectName: 'insecure-bank-2',
                   projectVersion: '1.0')]) {
                   sh 'io --stage execution --state io_state.json'
               }
@@ -117,11 +134,10 @@ pipeline {
             steps {
                 echo 'Execute Workflow Stage'
                 synopsysIO(connectors: [
-                    codeDx(configName: 'poc-codedx', projectId: '1'),
-                    blackduck(configName: 'poc-bd', projectName: 'insecure-bank', projectVersion: '1.0'),
-                    jira(assignee: 'karn@synopsys.com', configName: 'poc-jira', issueQuery: 'resolution=Unresolved AND labels in (Security, Defect)', projectKey: 'INSEC'), 
-                    msteams(configName: 'poc-msteams'), 
-                    buildBreaker(configName: 'poc-bb')
+                    //codeDx(configName: 'poc-codedx', projectId: '1'),
+                    jira(assignee: 'karn@synopsys.com', configName: 'jira-sandbox', issueQuery: 'resolution=Unresolved AND labels in (Security, Defect)', projectKey: 'INSEC'), 
+                    //msteams(configName: 'poc-msteams'), 
+                    //buildBreaker(configName: 'poc-bb')
                 ]) {
                     sh 'io --stage workflow --state io_state.json'
                 }
