@@ -136,7 +136,8 @@ pipeline {
                 synopsysIO(connectors: [
                     //codeDx(configName: 'poc-codedx', projectId: '1'),
                     //jira(assignee: 'iouser', configName: 'jira-sandbox', issueQuery: 'resolution=Unresolved AND labels in (Security, Defect)', projectKey: 'INSEC2'), 
-                    jira(assignee: 'iouser@synopsys.com', configName: 'jira-sandbox', issueQuery: 'resolution=Unresolved', projectKey: 'INSEC2'), 
+                    blackduck(configName: 'bd-sandbox',projectName: 'insecure-bank-2',projectVersion: '1.0'),                                            
+                    jira(assignee: 'iouser@synopsys.com', configName: 'jira-sandbox', issueQuery: 'resolution=Unresolved', projectKey: 'INSEC2')
                     //msteams(configName: 'poc-msteams'), 
                     //buildBreaker(configName: 'poc-bb')
                 ]) {
