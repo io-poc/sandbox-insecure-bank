@@ -45,7 +45,7 @@ pipeline {
                         projectName: 'insecure-bank-2', 
                         projectVersion: '1.0')                        
                     ]) {
-                        sh 'io --stage io Persona.Type=devops Project.Release.Type=major'
+                        sh 'io --stage io Persona.Type=devsecops Project.Release.Type=major'
                     }
 
                 script {
@@ -63,7 +63,7 @@ pipeline {
         }
 
 
-        stage('SAST - Polaris') {
+       /* stage('SAST - Polaris') {
             when {
                 expression { isSASTEnabled }
             }
@@ -77,7 +77,7 @@ pipeline {
                 }
             }
         }
-        
+        */
         stage('SAST - Sigma') { environment {
             OSTYPE='linux-gnu' }
             when {
