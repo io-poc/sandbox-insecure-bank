@@ -63,20 +63,20 @@ pipeline {
         }
 
 
-        // stage('SAST - Polaris') {
-        //     when {
-        //         expression { isSASTEnabled }
-        //     }
-        //     steps {
-        //         echo 'Running SAST using Polaris'
-        //         synopsysIO(connectors: [
-        //             [$class: 'PolarisPipelineConfig',
-        //             configName: 'polaris-demo',
-        //             projectName: 'insecure-bank']]) {
-        //             sh 'io --stage execution --state io_state.json'
-        //         }
-        //     }
-        // }
+        stage('SAST - Polaris') {
+            when {
+                expression { isSASTEnabled }
+            }
+            steps {
+                echo 'Running SAST using Polaris'
+                synopsysIO(connectors: [
+                    [$class: 'PolarisPipelineConfig',
+                    configName: 'polaris-demo',
+                    projectName: 'insecure-bank']]) {
+                    sh 'io --stage execution --state io_state.json'
+                }
+            }
+        }
         
         stage('SAST - Sigma') { environment {
             OSTYPE='linux-gnu' }
