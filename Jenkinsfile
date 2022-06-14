@@ -38,8 +38,8 @@ pipeline {
                          assignee: 'iouser@synopsys.com', 
                          configName: 'jira-sandbox', 
                          issueQuery: 'resolution=Unresolved', 
-                         projectKey: 'INSEC2', 
-                         projectName: 'insecure-bank-2'), 
+                         projectKey: 'INSEC', 
+                         projectName: 'insecure-bank'), 
                     blackduck(
                         configName: 'bd-sandbox', 
                         projectName: 'insecure-bank-2', 
@@ -135,9 +135,8 @@ pipeline {
                 echo 'Execute Workflow Stage'
                 synopsysIO(connectors: [
                     //codeDx(configName: 'poc-codedx', projectId: '1'),
-                    //jira(assignee: 'iouser', configName: 'jira-sandbox', issueQuery: 'resolution=Unresolved AND labels in (Security, Defect)', projectKey: 'INSEC2'), 
                     blackduck(configName: 'bd-sandbox',projectName: 'insecure-bank-2',projectVersion: '1.0'),                                            
-                    jira(assignee: 'iouser@synopsys.com', configName: 'jira-sandbox', issueQuery: 'resolution=Unresolved', projectKey: 'INSEC2')
+                    jira(assignee: 'iouser@synopsys.com', configName: 'jira-sandbox', issueQuery: 'resolution=Unresolved', projectKey: 'INSEC')
                     //msteams(configName: 'poc-msteams'), 
                     //buildBreaker(configName: 'poc-bb')
                 ]) {
@@ -167,17 +166,17 @@ pipeline {
                           //exit 1
                     }
                     
-                    codedx_value = workflowJSON.summary.risk_score
-                    for(arr in codedx_value){
-                        if(arr != null)
-                        {   
-                            print("Code Dx Score: $arr")
-                            if(arr < 80)
-                            {
-                                input message: 'Code Dx Score did not meet the defined threshold. Do you wish to proceed?'
-                            }
-                        }
-                    }
+                    // codedx_value = workflowJSON.summary.risk_score
+                    // for(arr in codedx_value){
+                    //     if(arr != null)
+                    //     {   
+                    //         print("Code Dx Score: $arr")
+                    //         if(arr < 80)
+                    //         {
+                    //             input message: 'Code Dx Score did not meet the defined threshold. Do you wish to proceed?'
+                    //         }
+                    //     }
+                    // }
                     
                 }
                 echo "Security Sign-Off triggered & approved"
