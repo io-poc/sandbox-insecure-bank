@@ -91,17 +91,17 @@ pipeline {
             }
         }
         
-        stage('SAST Plus Manual') {
-            when {
-                expression { isSASTPlusMEnabled }
-            }
-            steps {
-                script {
-                    input message: 'Manual source code review (SAST - Manual) triggered by IO. Proceed?'
-                }
-                echo "Out-of-Band Activity - SAST Plus Manual triggered & approved"
-            }
-        } 
+        // stage('SAST Plus Manual') {
+        //     when {
+        //         expression { isSASTPlusMEnabled }
+        //     }
+        //     steps {
+        //         script {
+        //             input message: 'Manual source code review (SAST - Manual) triggered by IO. Proceed?'
+        //         }
+        //         echo "Out-of-Band Activity - SAST Plus Manual triggered & approved"
+        //     }
+        // } 
 
         stage('SCA - BlackDuck') {
             when {
@@ -118,17 +118,17 @@ pipeline {
             }
         } 
 
-        stage('DAST Plus Manual') {
-            when {
-                expression { isDASTPlusMEnabled }
-            }
-            steps {
-                script {
-                    input message: 'Manual threat-modeling (DAST - Manual) triggered by IO. Proceed?'
-                }
-                echo "Out-of-Band Activity - DAST Plus Manual triggered & approved"
-            }
-        }
+        // stage('DAST Plus Manual') {
+        //     when {
+        //         expression { isDASTPlusMEnabled }
+        //     }
+        //     steps {
+        //         script {
+        //             input message: 'Manual threat-modeling (DAST - Manual) triggered by IO. Proceed?'
+        //         }
+        //         echo "Out-of-Band Activity - DAST Plus Manual triggered & approved"
+        //     }
+        // }
 
         stage('IO - Workflow') {
             steps {
